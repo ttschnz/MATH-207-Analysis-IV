@@ -5,11 +5,13 @@ on:
     types: [closed]
     paths:
       - '**.tex'
+      - '.github/workflows/compile_pdf.yaml'
   push:
     branches:
       - "**"
     paths:
       - '**.tex'
+      - '.github/workflows/compile_pdf.yaml'
 
 jobs:
   build-latex:
@@ -89,9 +91,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ needs.build-latex.outputs.new-tag }}
-          release_name: Pre-release ${{ needs.build-latex.outputs.new-tag }}
+          release_name: Release ${{ needs.build-latex.outputs.new-tag }}
           draft: false
           prerelease: true
+
+      - name: Update Latest Tag
+        run: |
+          git push origin :refs/tags/latest || true
+          git tag -f latest
+          git push origin latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
