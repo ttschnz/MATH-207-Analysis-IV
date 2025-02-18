@@ -3,9 +3,13 @@ name: Prepare Script.pdf
 on:
   pull_request:
     types: [closed]
+    paths:
+      - '**.tex'
   push:
     branches:
       - "**"
+    paths:
+      - '**.tex'
 
 jobs:
   build-latex:
