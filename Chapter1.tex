@@ -74,9 +74,20 @@ z_1=z_2
 \end{cases}
 \end{equation*}
 \subsubsection{Principal Argument}
+The argument can be thought of as the angle between the horizontal line and $z$ as a vector around the origin in counter clockwise direction.
 $$
-\operatorname{Arg}(z)\in[-\pi,+\pi]\implies z= |z| \cdot e^{i\operatorname{Arg}(z)}
+\operatorname{Arg}(z)\in]-\pi,+\pi]\implies z= |z| \cdot e^{i\operatorname{Arg}(z)}
 $$
+$$
+\operatorname{Arg}(z) = \begin{cases}
+	\arctan y/x&x > 0\\
+	\pi/2&x=0,y>0\\
+	\pi + \arctan y/x&x<0,y\ge0\\
+	-\pi/2&x=0,y<0\\
+	-\pi+ \arctan y/x&x<0,y<0
+\end{cases}
+$$
+
 
 \subsubsection{Algebraic Operations}
 With the polar expression multiplication of two complex numbers yields:
@@ -171,18 +182,233 @@ When differentiating $f(z)=1/z$ on $\mathbb C^\ast$ we get that $$f'(z)=-\frac 1
 \end{itemize}
 
 \subsection{Cauchy-Riemann Equations}
-Let $f:\mathbb C \to\mathbb C, f(x+yi)=u(x,y)+v(x,y)i$. 
-Then the two statements are equivalent:
+\paragraph{Recall} A function $f:\mathbb C \to \mathbb C$ is complex differentiable at $z_0\in\mathbb C$ if the limit $$f'(z_0)=\lim_{z\to z_0} \frac{f(z)-f(z_0)}{z-z_0}$$ exists and is finite.\footnote{Analogous to the definition of the derivative of a real function in Analysis I and II.}
+
+Let $W\subseteq \mathbb C$ be an open set and 
+\begin{equation*}
+	\begin{split}
+	f:W&\to\mathbb{C}\\
+	z=x+yi&\mapsto f(x+yi)=u(x,y)+v(x,y)i
+	\end{split}
+\end{equation*}
+be a \textbf{holomorphic} function. Then $u,v\in C^1(W)$ and
+
+\begin{equation}
+	\label{eq:cauchy_riemann}
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y}\qquad 
+	\frac{\partial v}{\partial y}=-\frac{\partial v}{\partial x}	
+\end{equation}
+
+Conversely, if \eqref{eq:cauchy_riemann} are satisfied, then $f$ is \textbf{holomorphic}.
+
+\subsubsection{Prove of \eqref{eq:cauchy_riemann}}
+If $f$ is holomorphic on $W$ then $\forall z_0\in W$:
+$$
+f'(z_0)=\lim_{z\to z_0} \frac{f(z)-f(z_0)}{z-z_0}
+$$
+we will calculate the limit in two ways:
+%TODO: Image
+Approaching $z_0$ from the x-direction:
+\begin{equation*}
+\begin{split}
+	f'(z_0) &= \lim_{x\to x_0} \frac{f(x+y_0i)-f(x_0+y_0i)}{x+y_0i-(x_0+y_0i)}\\
+	&= \lim_{x\to x_0} \frac{u(x,y_0)+v(x,y_0)i-u(x_0,y_0)-v(x_0,y_0)i}{x-x_0}\\
+	&= \lim_{x\to x_0} \frac{u(x,y_0)-u(x_0,y_0)}{x-x_0} + \lim_{x\to x_0} \frac{v(x,y_0),v(x_0,y_0)}{x-x_0}i\\
+	&= \frac{\partial u}{\partial x} + \frac{\partial v}{\partial x}i
+\end{split}
+\end{equation*}
+
+Similarly, approaching $z_0$ from the y-direction:
+\begin{equation*}
+	\begin{split}
+		f'(z_0) &= \lim_{y\to y_0} \frac{f(x_0+yi)-f(x_0+y_0i)}{x_0+yi-(x_0+y_0i)}\\
+		&= \lim_{y\to y_0} \frac{u(x_0,y)+v(x_0,y)i-u(x_0,y_0)-v(x_0,y_0)i}{(y-y_0)i}\\
+		&= \frac{\partial v}{\partial y} - \frac{\partial u}{\partial y}i
+	\end{split}
+\end{equation*}
+
+When combining the two results, both real and imaginary component must be equal,
+yielding the equations \eqref{eq:cauchy_riemann}. Additionally we now know that:
+\begin{equation}
+f'(z_0) =\frac{\partial u}{\partial x} + \frac{\partial v}{\partial x}i= \frac{\partial v}{\partial y} - \frac{\partial u}{\partial y}i
+\end{equation}
+
+\subsubsection{Examples}
 \begin{itemize}
-    \item $f$ is complex differentiable
-    \item $u,v$ have continuous derivatives and satisfy
-    \begin{equation*}
-        \begin{split}
-            u_x&=v_y\\
-            u_y&=-v_x
-        \end{split}
-    \end{equation*}
+	\item 
+		Let $f(z)=z^2=\underbrace{x^2-y^2}_{u(x,y)}+\underbrace{2xyi}_{v(x,y)}$ 
+		Is $f$ holomorphic over $\mathbb{C}$?
+		We check the two Cauchy-Riemann equations to see that they are satisfied:
+		$$
+		u_x = 2x\qquad v_x = 2y\qquad u_y = -y\qquad v_y = 2x 
+		$$
+		finally, $f'(z)=2x+2yi=2z$.
+	
+	\item
+		Let $f(z)=\overline z = x-yi$.
+		We check the two Cauchy-Riemann equations:
+		$$
+		u_x = 1 \qquad v_x = 0\qquad u_y=0\qquad v_y = -1
+		$$
+		We see that the equations are not satisfied, since $u_x \ne v_y$. From this we know that $f$ is not holomorphic.
+		
+	\item
+		Let $f:\mathbb{C}\backslash\{0\} \to \mathbb{C}, f(z)=z^{-1}$ 
+		We have: $f(x+yi) = \frac{\overline z}{|z|^2}$
+		\begin{equation*}
+			\begin{split}
+				\frac{\partial u}{\partial x}&=\frac{x^2+y^2-2x^2}{(x^2+y^2)^2}\\
+				\frac{\partial v}{\partial x}&=\frac{2xy}{(x^2+y^2)^2}\\
+				\frac{\partial u}{\partial y}&=-\frac{2xy}{(x^2+y^2)^2}\\
+				\frac{\partial v}{\partial y}&=-\frac{x^2-y^2+2y^2}{(x^2+y^2)^2}
+			\end{split}
+		\end{equation*}
+		This the equations are satisfied and $f'=u_x+v_xi=-z^{-2}$
+		
+	\item 
+		Let $f(z)=e^z=e^xe^{yi}=e^x\cos y+ e^x\sin yi$ therefore:
+		\begin{equation*}
+			\begin{split}
+				\frac{\partial u}{\partial x} = e^x\cos y\\
+				\frac{\partial v}{\partial x} = e^x\sin y\\
+				\frac{\partial u}{\partial y} = -e^x\sin y\\
+				\frac{\partial v}{\partial y} = e^x\cos y
+			\end{split}
+		\end{equation*}
+		Again, the equations are satisfied and $f'=u_x+v_xi=e^z$
 \end{itemize}
 
+\subsection{Rules of Differentiation for Complex Derivatives}
+Let $f,g:W\to \mathbb{C}$ be holomorphic. Then:
+\begin{equation*}
+	\begin{split}
+		(f+g)' &= f' + g'\\
+		(f\cdot g)' &= f'\cdot g + f\cdot g'\\
+		(\frac fg)' &= \frac{f'\cdot g - f\cdot g'}{g^2} \\\qquad g\ne 0
+	\end{split}
+\end{equation*}
+If the image of $g$ is inside $W$:
+$$
+(f\circ g)' (z) = f'(g(z))\cdot  g' (z)
+$$
+These relations can be proved in exactly the same way as in the real case, and it follows that the usual formula for polynomials and trigonometric functions etc. hold, e.g.:
+\begin{equation*}
+	\begin{split}
+		(z^k)' &= kz^{k-1}\qquad k \in \mathbb{Z}\\
+		(\cos(z))' &= -\sin(z)
+	\end{split}
+\end{equation*}
+% TODO: Copy aside 
+\subsection{The Complex Logarithm}
+\paragraph{Recall}The principal argument of a complex number $z\ne 0$: $\operatorname{Arg}(z)\in]-\pi,\pi]$ is defined for $z\ne0$ and discontinuous on the negative real axis. 
 
+To define the complex logarithm, for a complex number $z=e^{x+yi}$ we would want $\log z = x+yi$. So we define:
+\begin{equation*}
+	\log z = \log |z| + \operatorname{Arg} (z) \cdot i
+\end{equation*}
+\paragraph{Remarks}
+\begin{itemize}
+	\item $\log z$ is still not defined for $z=0$
+	\item $\log z$ is discontinuous on the negative real axis, but $\log z$ is continuous on $\mathbb{C}\backslash \{z\in\mathbb{C}:\operatorname{Im}(z)=0,\operatorname{Re}(z)\le 0 \}$
+	% TODO: Graph with negative real part but imaginary zero highlighted as discontinuity.
+	\item $log z$ is holomorphic on $\mathbb{C} \backslash \{z:\operatorname{Im} z = 0, \operatorname{Re} z \le 0\}$ with $(\log z)' = 1/z$
+	\item For positive real numbers $\log(x_1\cdot x_2)=\log(x_1)+\log(x_2)$. This is no longer true for general complex numbers due to discontinuity. But it is true for up to $2\pi i \mathbb{Z}$.
+\end{itemize}
+\subsubsection{Power Function with Complex Exponent}
+Let $\gamma \in \mathbb{C}$. Define $f(z)=z^\gamma = e^{\log(z^\gamma)}=e^{\gamma \log z}=|z|^\gamma e^{\gamma \operatorname{Arg}(z)i}$  Holomorphic over $\mathbb{C}\backslash \{z:\operatorname{Im}z=0,\operatorname{Re}z\le 0\}$.
+When $\gamma \in \mathbb Z$, $f$ is continuous and holomorphic for $z\ne 0$.
+
+\section{Complex Integration}
+
+\subsection{Recalls}
+If $\vec F$ is a continuous vector field on $\mathbb R^2$, $\vec F :\mathbb R^2 \to\mathbb R^2$:
+$$
+\vec F(x_1,x_2)=(F_1(x_1,x_2),F_2(x_1,x_2))
+$$ And let $\gamma:[a,b]\to \mathbb R^2$ be a curve of class $C^1$. Furthermore, let $\Gamma$ be defined as the image of $\gamma$. Then we know, that:
+$$
+\int_\Gamma \vec F \, dl = \int_a^b \vec F(\gamma(t))\bullet \gamma' (t) \,dt
+$$
+where the $\bullet$ denotes the scalar product.
+\begin{itemize}
+	\item $\gamma$ is closed if $\gamma(a)=\gamma(b)$.
+	\item $\gamma$ is simple $\implies$  no self intersections.
+	\item $\gamma$ is regular if $\gamma'(t)\ne0$. (no "knicks")
+\end{itemize}
+For the following chapters, when we talk about curves, we always mean regular curves.
+
+By Green's theorem we also know that if $\operatorname{curl} F = 0$, the integral along any closed curve is zero.
+
+\subsection{Definition: Integral of a Complex Function along a Curve}
+Let $\gamma : [a,b]\to\mathbb C$ be a regular curve which parametrises $\Gamma \subseteq \mathbb C$ and let $f:\gamma \to \mathbb C$ be a continuous function.
+Then:
+\begin{equation*}
+	\int_\Gamma f(z)\,dz  = \int_\gamma f(z)\,dz := \int_a^b f(\gamma(t))\cdot \gamma'(t)\,dt
+\end{equation*}
+where the $\cdot$ denotes complex multiplication.
+This integral will have the same value, independent of the parametrisation of $\Gamma$.
+
+
+
+\subsubsection{Examples}
+\paragraph{Semi-Circle}
+Let $f(z)=z^2$, we want to find the integral along the following curve $\Gamma$. We choose a parametrisation $\gamma(t)= e^{it}, t: 0\to \pi$.
+% TODO: image of domain
+We calculate the derivative $\gamma'(t)=i e^{it}$ and calculate:
+\begin{equation*}
+	\begin{split}
+		\int_\Gamma z^2\,dz = \int_0^\pi (e^{it})^2 ie^{it} \,dt= \int_0^\pi ie^{3it}\,dt = i\left.\frac{e^{3it}}{3i} \right|_0^\pi=-\frac 23
+	\end{split}
+\end{equation*}
+
+In general, we split the integral in real and imaginary parts and then integrate them separately.
+
+
+
+\paragraph{Holomorphic functions on a Full-Circle}
+Let $f(z)=\frac 1z$ on the curve $\Gamma = \{|z|=1\}$.
+We choose the parametrisation $\gamma(t)=e^{it},t\in[0,2\pi]$. We calculate:
+\begin{equation*}
+	\int_\Gamma \frac 1z \,dz = \int_0^{2\pi}\frac 1{e^{it}}ie^{it}\,dt = 2\pi i\ne 0
+\end{equation*}
+We get a non-zero result on this closed curve because $f(z)$ is not holomorphic.
+
+If we tried $f(z)=z^2$ we would get zero, because this function is holomorphic. However, if we tried $f(z)=z^{-2}$, which is not holomorphic, we would still get zero.
+
+\subsection{Cauchy's Theorem}
+We denote the interior region of a closed curve as $\operatorname{int}\Gamma$. If $U\subseteq \mathbb C$ is open and simply connected, it has one component and no holes.
+
+Let $U\subseteq \mathbb C$ be open and simply connected and let $\Gamma$ be a closed, piecewise regular curve inside $U$. If $f:U\to \mathbb C$ is holomorphic on its interior region, then \footnote{A formal proof can be found in the lecture notes on Moodle.}
+\begin{equation*}
+	\int_\Gamma f(z)\,dz =0 
+\end{equation*}
+
+
+\subsection{An Extension to Cauchy's Theorem}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{Sketches/CauchysTheoremExtended}
+	
+	\label{fig:cauchystheoremextended}
+\end{figure}
+
+
+Let $\Gamma_0, \Gamma_1$ be two closed, simple, regular curves with the same orientation with $\Gamma_1\subseteq \operatorname{int} \Gamma_0$.
+Let $f$ be a function with is holomorphic on $\operatorname{int} \Gamma_0\backslash \operatorname{int}\Gamma_1$.
+Then: \footnote{A formal proof can be found in the lecture notes on Moodle.}
+\begin{equation*}
+	\int_{\Gamma_0} f(z)\,dz = \int_{\Gamma_1} f(z)\,dz
+\end{equation*}
+
+\subsection{Cauchy's Integral Formula}
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=0.3\linewidth]{Sketches/CauchyIntegralFormulas}
+\end{center}
+\end{figure}
+
+Let $D \subseteq\mathbb C$ be an open set and $f:D\to \mathbb C$ be a holomorphic set. If $z_0\in D$, then:
+\begin{equation*}
+	f(z_0) = \frac 1{2\pi i} \int_\Gamma \frac{f(z)}{z-z_0}\,dz
+\end{equation*}
+for any closed, simple curve $\Gamma$ inside $D$ which contains $z_0$ in its interior and is counter-clockwise oriented.
 
