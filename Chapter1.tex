@@ -396,7 +396,12 @@ Let $\Gamma_0, \Gamma_1$ be two closed, simple, regular curves with the same ori
 Let $f$ be a function with is holomorphic on $\operatorname{int} \Gamma_0\backslash \operatorname{int}\Gamma_1$.
 Then: \footnote{A formal proof can be found in the lecture notes on Moodle.}
 \begin{equation*}
-	\int_{\Gamma_0} f(z)\,dz = \int_{\Gamma_1} f(z)\,dz
+	\boxed{\int_{\Gamma_0} f(z)\,dz = \int_{\Gamma_1} f(z)\,dz}
+\end{equation*}
+
+Furthermore, let $\Gamma_1,\Gamma_2$ be two curves with the same start- end endpoint and $f$ is holomorphic in the region contained between $\Gamma_1$ and $\Gamma_2$, then 
+\begin{equation*}
+	\int_{\Gamma_1} f(x)\,dx = \int_{\Gamma_2} f(x)\,dx
 \end{equation*}
 
 \subsection{Cauchy's Integral Formula}
@@ -408,7 +413,90 @@ Then: \footnote{A formal proof can be found in the lecture notes on Moodle.}
 
 Let $D \subseteq\mathbb C$ be an open set and $f:D\to \mathbb C$ be a holomorphic set. If $z_0\in D$, then:
 \begin{equation*}
-	f(z_0) = \frac 1{2\pi i} \int_\Gamma \frac{f(z)}{z-z_0}\,dz
+\boxed{f(z_0) = \frac 1{2\pi i} \int_\Gamma \frac{f(z)}{z-z_0}\,dz}
 \end{equation*}
 for any closed, simple curve $\Gamma$ inside $D$ which contains $z_0$ in its interior and is counter-clockwise oriented.
+
+\subsubsection{Cauchy's Integral Formula Extended}
+
+With the same assumptions as above,
+\begin{equation*}
+	f^{(n)}(z_0) = \frac{n!}{2\pi i}\int_{\Gamma} \frac{f(z)}{(z-z_0)^{(n + 1)}} \,dz
+\end{equation*}
+
+Through this formula we find the statement again, that holomorphic functions are infinitely differentiable.
+
+
+\section{Laurent Series}
+
+\subsection{Recall: Taylor Series for Real Numbers}
+let $f:\mathbb R \to \mathbb R$ be a sufficiently regular function. For any $x_0\in \mathbb R$, the Taylor polynomial of degree $N$ is defined by:
+\begin{equation*}
+	T_{x_0}^Nf(x)=f(x_0)+ f'(x_0)(x-x_0)+\dots + \frac{f^{(n)}(x_0)}{N! }(x-x_0) = \sum_{n=0}^N \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n
+\end{equation*}
+If $f\in C^{N+1}(\mathbb R)$, then $\forall x_0,x\in\mathbb R: \exists \theta \in]0,1[$ such that:
+\begin{equation*}
+	f(x)= T_{x_0}^N f(x)+ \frac{f^{(N+1)}(\theta x_0+(1-\theta)x)}{N+1!}(x-x_0)^{N+1}
+\end{equation*}
+In practice, $\theta$ is not known, but we can usually estimate the $N+1$ th derivative.
+
+If $f$ has derivatives of all orders at $x_0$, then we may consider the Taylor series
+\begin{equation*}
+	\sum_{n=0}^\infty \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n
+\end{equation*}
+
+Functions $f$ such that the Taylor series converges to $f$ in a neighbourhood of $x_0$ are called \textbf{analytic}, and therefore $C^\infty$. Not all $C^\infty$ functions are analytic.
+\subsection{Taylor Series for Complex Functions: Regular Laurent Series}
+Let $D\subseteq \mathbb C$ be an open set ant $z_0\in D$. Let $R> 0$ be such that the disc
+\begin{equation*}
+	B_R(z_0):=\{z:|z-z_0|<R\}
+\end{equation*}
+is contained in $D$. If $f:D\to \mathbb C$ is \textbf{holomorphic}, then \begin{equation*}
+	f(z)=\sum_{n=0}^\infty \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n
+\end{equation*}
+for all $z \in B_R(z_0)$.
+
+The largest such $R > 0 $ is the \textbf{Radius of convergence.}
+
+\paragraph{Remarks} Homomorphic functions $f$ are therefore analytic (around every $z_0$ in their domain, there exists a disk on which the Taylor series converges to $f$).
+
+In practice, $R$ is the distance of $z_0$ from the "nearest" point where $f$ is not holomorphic or not defined.
+
+We can connect the Taylor series to the Cauchy integral formula:
+\begin{equation*}
+	\sum_{n=0}^\infty \frac{f^{(n)(z_0)}}{n!}(z-z_0)^n = \sum_{n=0}^\infty c_n(z-z_0)^n
+\end{equation*}
+where
+\begin{equation*}
+	c_n = \frac{f^{(n)}(z_0)}{n!}= \frac 1{2\pi i} \int_\Gamma \frac{f(\zeta)}{\zeta - z_0}\,d\zeta
+\end{equation*}
+
+Note that this important result can be derived from the above:
+\begin{equation*}
+	\boxed{\sum_{n=0}^\infty z^n=\frac 1{1-z}} \qquad \forall |z|< 1
+\end{equation*}
+
+
+\subsection{Laurent Series}
+Let $D\subseteq \mathbb C$ be an open set and $z_0\in D$. Suppose that:
+\begin{equation*}
+	f:D\backslash \{z_0\}\to\mathbb C
+\end{equation*}
+is holomorphic. Let $R > 0$ be such that $B_R(z_0)\subseteq D$. Then for all $z\in  B_R(z_0)\backslash\{z_0\}$:
+\begin{equation}
+	\boxed{f(z) = \sum_{-\infty}^\infty c_n(z-z_0)^n}
+\end{equation}
+where, for any simple, closed, counter-clockwise oriented curve $\Gamma$, such that the interior of $\Gamma$ is contained in $D$ and $z_0$ is in the interior of $\Gamma$, the coefficients $c_n$ are given by:
+\begin{equation*}
+	c_n = \frac 1{2\pi i} \int_ \Gamma\frac{f(\zeta)}{(\zeta - z_0)^{(n+1)}}\,d \zeta
+\end{equation*}
+
+\paragraph{Remarks} The Laurent series is like a Taylor series, but we now also include therms with polynomial singularities. As in the case of the Taylor series, the Laurent series is the \textbf{only} representation of $f$ as a power series. I.e. any other such series will have the same coefficients.
+
+\subsubsection{Singular and Regular parts}
+Any Laurent series splits into a \textbf{singular} and a \textbf{regular} part:
+\begin{equation*}
+	f(z) = \sum_{-\infty}^\infty c_n (z-z_0) ^n = \underbrace{\dots + \frac{c_{-2}}{(z-z_0)^2}+\frac{c_{-1}}{(z-z_0)}}_{\text{singular}} + \underbrace{c_0 + c_1(z-z_0) + \dots}_{\text{regular}}
+\end{equation*}
+The Taylor series is a Laurent series with no singular part.
 
